@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Course Enrollments</h1>
+<ul>
+{% for enrollment in object_list %}
+    <li><a href="{% url 'courseenrollment-detail' enrollment.pk %}">{{ enrollment.student }} - {{ enrollment.course }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Degree Requirements</h1>
+<ul>
+{% for requirement in object_list %}
+    <li><a href="{% url 'degreerequirement-detail' requirement.pk %}">{{ requirement.program }} - {{ requirement.course }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

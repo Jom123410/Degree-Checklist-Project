@@ -1,3 +1,7 @@
+Screenshot
+![Screenshot (132)](https://github.com/Jom123410/Degree_Checklist/assets/57498419/cf8486a0-336e-44c5-9351-8d8f3280c955)
+
+
 # Degree_Checklist
 ### Entity-Relationship Diagrams
 

@@ -10,10 +10,23 @@ class Student(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     address = models.TextField()
-    # Add other fields here
+  
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+    def get_enrolled_courses(self, semester=None):
+        if semester:
+            return self.courseenrollment_set.filter(semester=semester)
+        return self.courseenrollment_set.all()
+
+    def get_remaining_credits(self):
+        total_credits = self.degree_program.total_credits_required
+        earned_credits = sum(enrollment.course.credits for enrollment in self.get_enrolled_courses())
+        return total_credits - earned_credits
+
+    def get_advisor(self):
+        return self.advisor
 
 # Define the DegreeProgram model
 class DegreeProgram(models.Model):
@@ -23,7 +36,7 @@ class DegreeProgram(models.Model):
     total_credits_required = models.IntegerField()
     duration_in_years = models.IntegerField()
     program_description = models.TextField()
-    # Add other fields here
+    
 
     def __str__(self):
         return self.program_name
@@ -37,10 +50,14 @@ class Course(models.Model):
     description = models.TextField()
     prerequisites = models.TextField()
     semester_offered = models.CharField(max_length=20)
-    # Add other fields here
+    
 
     def __str__(self):
         return self.course_code
+    
+    def is_prerequisite_satisfied(self, student):
+        # logic to check if prerequisites for this course are satisfied by the given student.
+        pass
 
 # Define the Adviser model
 class Adviser(models.Model):
@@ -50,7 +67,7 @@ class Adviser(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     department = models.CharField(max_length=100)
-    # Add other fields here
+    
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -61,7 +78,11 @@ class DegreeRequirement(models.Model):
     program = models.ForeignKey(DegreeProgram, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     credits_required = models.IntegerField()
-    # Add other fields here
+    
+
+def is_satisfied_by(self, student):
+        # logic to check if the student satisfies this requirement.
+        pass
 
 # Define the CourseEnrollment model
 class CourseEnrollment(models.Model):
@@ -71,3 +92,12 @@ class CourseEnrollment(models.Model):
     enrollment_date = models.DateField()
     grade = models.CharField(max_length=2)
     
+    SEMESTER_CHOICES = [
+        ('Fall', 'Fall'),
+        ('Spring', 'Spring'),
+        ('Summer', 'Summer'),
+    ]
+    semester = models.CharField(max_length=10, choices=SEMESTER_CHOICES, default='Fall')
+
+    def __str__(self):
+        return f"{self.student} enrolled in {self.course} during {self.semester}"

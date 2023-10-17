@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Semesters</h2>
+<ul>
+    {% for semester in semesters %}
+    <li>{{ semester.name }} - From {{ semester.start_date }} to {{ semester.end_date }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

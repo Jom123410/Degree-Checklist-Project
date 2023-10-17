@@ -1,7 +1,15 @@
 from django.db import models
 
-# Create your models here.
- # Define the Student model
+# Define the Semester model
+class Semester(models.Model):
+    name = models.CharField(max_length=100, unique=True)  # To ensure each semester has a unique name.
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    def __str__(self):
+        return self.name
+
+# Define the Student model
 class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50)
@@ -10,7 +18,6 @@ class Student(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     address = models.TextField()
-  
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -36,7 +43,6 @@ class DegreeProgram(models.Model):
     total_credits_required = models.IntegerField()
     duration_in_years = models.IntegerField()
     program_description = models.TextField()
-    
 
     def __str__(self):
         return self.program_name
@@ -48,15 +54,14 @@ class Course(models.Model):
     course_name = models.CharField(max_length=100)
     credits = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField()
-    prerequisites = models.TextField()
+    prerequisites = models.ManyToManyField('self', blank=True)
     semester_offered = models.CharField(max_length=20)
-    
 
     def __str__(self):
-        return self.course_code
+        return self.course_name
     
     def is_prerequisite_satisfied(self, student):
-        # logic to check if prerequisites for this course are satisfied by the given student.
+        # TODO: Add logic to check if prerequisites for this course are satisfied by the given student.
         pass
 
 # Define the Adviser model
@@ -67,7 +72,6 @@ class Adviser(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     department = models.CharField(max_length=100)
-    
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -79,9 +83,8 @@ class DegreeRequirement(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     credits_required = models.IntegerField()
     
-
-def is_satisfied_by(self, student):
-        # logic to check if the student satisfies this requirement.
+    def is_satisfied_by(self, student):
+        # TODO: to check if the student satisfies this requirement.
         pass
 
 # Define the CourseEnrollment model

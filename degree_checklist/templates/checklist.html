@@ -1,0 +1,8 @@
+{% for semester, courses in checklist.courses_by_semester.items %}
+<h2>{{ semester }} <button onclick="toggleCourses('{{ semester }}')">Toggle Courses</button></h2>
+<ul id="courses-{{ semester }}">
+    {% for course in courses %}
+    <li>{{ course.course_name }}</li>
+    {% endfor %}
+</ul>
+{% endfor %}

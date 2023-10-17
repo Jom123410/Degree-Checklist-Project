@@ -1,6 +1,7 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.views.generic import ListView, DetailView
 from .models import Student, DegreeProgram, Course, Adviser, DegreeRequirement, CourseEnrollment
+from .forms import StudentForm, CourseForm, Semester
 
 def home(request):
     return render(request, "home.html")
@@ -10,9 +11,52 @@ class StudentListView(ListView):
     model = Student
     template_name = "student_list.html"
 
+class SemesterListView(ListView):
+    model = Semester  # Specify the model you want to work with.
+    template_name = 'semester_list.html'  # Specify the name of the template to render. You can change this to your desired template name.
+    context_object_name = 'semesters'     
+
+class SemesterDetailView(DetailView):
+    model = Semester
+    template_name = 'degree_checklist/semester_detail.html'  # Update this to the path of your desired template
+    context_object_name = 'semester'
+    
 class StudentDetailView(DetailView):
     model = Student
     template_name = "student_detail.html"
+
+def add_student(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('some_view_name')  # Redirect to some view after successfully adding a student
+    else:
+        form = StudentForm()
+
+    return render(request, 'add_student.html', {'form': form})
+
+def add_course(request):
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('course_list')  # Redirect to the list of courses after adding a course
+    else:
+        form = CourseForm()
+
+    return render(request, 'add_course.html', {'form': form})
+
+def add_semester(request):
+    if request.method == 'POST':
+        form = Semester(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('semester_list')  # Redirect to the list of semesters after adding a semester
+    else:
+        form = Semester()
+
+    return render(request, 'add_semester.html', {'form': form})
 
 # DegreeProgram views
 class DegreeProgramListView(ListView):

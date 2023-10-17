@@ -1,0 +1,14 @@
+{% extends "base.html" %}  {# This assumes you have a base template to inherit from. Adjust as needed. #}
+
+{% block content %}
+    <h2>Semester Detail</h2>
+    
+    <h3>{{ semester.name }}</h3>
+    
+    <ul>
+        <li><strong>Start Date:</strong> {{ semester.start_date }}</li>
+        <li><strong>End Date:</strong> {{ semester.end_date }}</li>
+    </ul>
+
+    <a href="{% url 'semester-list' %}">Back to Semester List</a>
+{% endblock %}

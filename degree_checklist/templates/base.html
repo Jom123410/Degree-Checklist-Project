@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}Django App{% endblock %}</title>
+    <!-- Load static CSS file -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -32,12 +35,11 @@
                     <a class="nav-link" href="{% url 'adviser-list' %}">Advisers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'degreerequirement-list' %}">Degreerequirements</a>
+                    <a class="nav-link" href="{% url 'degreerequirement-list' %}">Degree Requirements</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'courseenrollment-list' %}">CourseEnrollments</a>
+                    <a class="nav-link" href="{% url 'courseenrollment-list' %}">Course Enrollments</a>
                 </li>
-                
             </ul>
         </div>
     </nav>
@@ -48,5 +50,7 @@
     <!-- jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>

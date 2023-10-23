@@ -7,6 +7,17 @@ from django.views.generic import ListView, DetailView
 def home(request):
     return render(request, "home.html")
 
+def form_page(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')  # Redirect to home or any other URL after successful form submission.
+    else:
+        form = StudentForm()
+
+    return render(request, 'form_page.html', {'form': form})
+
 # Create views
 def create_course(request):
     if request.method == 'POST':

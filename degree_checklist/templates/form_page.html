@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Title -->
+    <h2 class="text-center mb-4">Degree Checklist Forms</h2>
+
+    <!-- Tabbed Navigation for Forms -->
+    <ul class="nav nav-tabs" id="formTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="course-tab" data-toggle="tab" href="#course" role="tab">Course</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="semester-tab" data-toggle="tab" href="#semester" role="tab">Semester</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="degree-program-tab" data-toggle="tab" href="#degree-program" role="tab">Degree Program</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="student-tab" data-toggle="tab" href="#student" role="tab">Student</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="adviser-tab" data-toggle="tab" href="#adviser" role="tab">Adviser</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="degree-requirement-tab" data-toggle="tab" href="#degree-requirement" role="tab">Degree Requirement</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="course-enrollment-tab" data-toggle="tab" href="#course-enrollment" role="tab">Course Enrollment</a>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="formTabsContent">
+
+        <!-- Course Form -->
+        <div class="tab-pane fade show active" id="course" role="tabpanel">
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                {{ course_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Semester Form -->
+        <div class="tab-pane fade" id="semester" role="tabpanel">
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                {{ semester_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Degree Program Form -->
+        <div class="tab-pane fade" id="degree-program" role="tabpanel">
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                {{ degree_program_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Student Form -->
+        <div class="tab-pane fade" id="student" role="tabpanel">
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                {{ student_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Adviser Form -->
+        <div class="tab-pane fade" id="adviser" role="tabpanel">
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                {{ adviser_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Degree Requirement Form -->
+        <div class="tab-pane fade" id="degree-requirement" role="tabpanel">
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                {{ degree_requirement_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Course Enrollment Form -->
+        <div class="tab-pane fade" id="course-enrollment" role="tabpanel">
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                {{ course_enrollment_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="mt-4 mb-2">Progress:</div>
+        <div class="progress mb-4">
+            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

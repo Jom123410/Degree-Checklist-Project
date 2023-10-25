@@ -95,12 +95,10 @@ class CourseEnrollment(models.Model):
     enrollment_date = models.DateField()
     grade = models.CharField(max_length=2)
     
-    SEMESTER_CHOICES = [
-        ('Fall', 'Fall'),
-        ('Spring', 'Spring'),
-        ('Summer', 'Summer'),
-    ]
-    semester = models.CharField(max_length=10, choices=SEMESTER_CHOICES, default='Fall')
+class Semester(models.Model):
+    name = models.CharField(max_length=50)
+    start_date = models.DateField()
+    end_date = models.DateField()
 
     def __str__(self):
-        return f"{self.student} enrolled in {self.course} during {self.semester}"
+        return self.name

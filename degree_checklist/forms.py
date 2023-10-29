@@ -1,6 +1,12 @@
 from django import forms
-from .models import Student, DegreeProgram, Course, Adviser, DegreeRequirement, CourseEnrollment, Semester
+from .models import UploadedDataFile, Student, DegreeProgram, Course, Adviser, DegreeRequirement, CourseEnrollment, Semester
 
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadedDataFile
+        fields = ['file']
+        
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course

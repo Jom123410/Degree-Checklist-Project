@@ -1,5 +1,16 @@
 from django.contrib import admin
-from .models import Student, DegreeProgram, Course, Adviser, DegreeRequirement, CourseEnrollment, Semester
+from .models import Student, DegreeProgram, Course, Adviser, DegreeRequirement, CourseEnrollment, Semester, UploadedDataFile
+from .forms import UploadFileForm
+from .views import handle_uploaded_file
+
+class UploadedDataFileAdmin(admin.ModelAdmin):
+    form = UploadFileForm
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        handle_uploaded_file(obj.file)
+
+admin.site.register(UploadedDataFile, UploadedDataFileAdmin)
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):

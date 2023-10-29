@@ -1,5 +1,8 @@
 from django.db import models
 
+class UploadedDataFile(models.Model):
+    file = models.FileField(upload_to='uploads/%Y/%m/%d/')
+
 # Define the Semester model
 class Semester(models.Model):
     name = models.CharField(max_length=100, unique=True)  # To ensure each semester has a unique name.

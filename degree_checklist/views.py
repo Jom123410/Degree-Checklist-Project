@@ -1,11 +1,31 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .forms import (CourseForm, SemesterForm, DegreeProgramForm, StudentForm, 
-                   AdviserForm, DegreeRequirementForm, CourseEnrollmentForm)
-from .models import Course, Semester, DegreeProgram, Student, Adviser, DegreeRequirement, CourseEnrollment
+                   AdviserForm, DegreeRequirementForm, CourseEnrollmentForm, UploadFileForm)
+from .models import Course, Semester, DegreeProgram, Student, Adviser, DegreeRequirement, CourseEnrollment, UploadedDataFile
 from django.views.generic import ListView, DetailView
+
 
 def home(request):
     return render(request, "home.html")
+
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            instance = form.save()
+            # Handle the file processing here, e.g., importing data into the database
+            # For now, let's assume you have a function called `handle_uploaded_file`
+            handle_uploaded_file(instance.file)
+            return redirect('some_view_name')
+    else:
+        form = UploadFileForm()
+    return render(request, 'upload.html', {'form': form})
+
+def handle_uploaded_file(f):
+    # This function will handle your file, you can use Python's built-in CSV or 
+    # other libraries to parse and import the data into your models
+    pass
+
 
 def form_page(request):
     if request.method == 'POST':

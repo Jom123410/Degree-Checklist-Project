@@ -1,12 +1,14 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # Home
     path("", views.home, name="home"),
 
-    path('forms/', views.form_page, name='form_page'),   
-    
+    path('forms/', views.form_page, name='form_page'),
+
     # Students
     path("students/", views.StudentListView.as_view(), name="student-list"),
     path("students/<int:pk>/", views.StudentDetailView.as_view(), name="student-detail"),
@@ -66,3 +68,6 @@ urlpatterns = [
     path('delete-course-enrollment/<int:pk>/', views.delete_course_enrollment, name='delete_course_enrollment'),
     path('list-course-enrollments/', views.list_course_enrollments, name='list_course_enrollments'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

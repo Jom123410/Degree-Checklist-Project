@@ -1,6 +1,12 @@
 Screenshot
-![Screenshot (133)](https://github.com/Jom123410/Degree-Checklist-Project/assets/57498419/90022f7b-1f58-4665-9273-884e97e27ed9)
-![Screenshot (132)](https://github.com/Jom123410/Degree_Checklist/assets/57498419/cf8486a0-336e-44c5-9351-8d8f3280c955)
+![Screenshot (136)](https://github.com/Jom123410/280222/assets/57498419/060928b6-3304-4499-a584-8c2ec05da4c0)
+![Screenshot (137)](https://github.com/Jom123410/280222/assets/57498419/ad79ecbc-3100-4f63-b0ac-4ab84af00d19)
+![Screenshot (138)](https://github.com/Jom123410/280222/assets/57498419/215030ff-2a6a-4e9e-b48c-04b592f667ac)
+![Screenshot (139)](https://github.com/Jom123410/280222/assets/57498419/2d8dc9b7-d9c9-4a7e-a296-73cfcda4a79f)
+![Screenshot (140)](https://github.com/Jom123410/280222/assets/57498419/7970e0f6-eed9-4315-bb77-f48abf70f9bd)
+![Screenshot (141)](https://github.com/Jom123410/280222/assets/57498419/f2eda80c-fdbf-4e0e-ad16-c7ab87ddbb1f)
+![Screenshot (142)](https://github.com/Jom123410/280222/assets/57498419/07357da8-7ab2-49a3-be82-cd04f07f7240)
+![Screenshot (143)](https://github.com/Jom123410/280222/assets/57498419/de6fd443-5bc2-404a-9578-19c749a4a0ce)
 
 
 # Degree_Checklist

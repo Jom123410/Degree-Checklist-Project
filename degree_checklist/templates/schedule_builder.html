@@ -1,0 +1,68 @@
+{% extends "base.html" %}  <!-- Assuming you have a base template with a header, footer, and included JS/CSS files -->
+
+{% block content %}
+  <h2>Schedule Builder</h2>
+  <p>Drag and drop courses into the desired semester slots.</p>
+
+  <div id="schedule-builder">
+    {% for semester in schedule.semesters.all %}
+      <div class="semester" data-semester-id="{{ semester.id }}">
+        <h3>{{ semester.name }}</h3>
+        <ul class="course-list" id="semester-{{ semester.id }}">
+          {% for course in semester.courses.all %}
+            <li class="course" data-course-id="{{ course.id }}">
+              {{ course.course_name }} ({{ course.course_code }})
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+
+  <button id="save-schedule">Save Schedule</button>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $(function() {
+      var academicYear = '{{ academic_year }}';  // Quotes added if it's a string
+      var semester = '{{ semester }}';
+      
+      $(".course-list").sortable({
+        connectWith: ".course-list",
+        placeholder: "course-placeholder",
+        update: function(event, ui) {
+          var course_id = ui.item.data('course-id');
+          var new_semester_id = ui.item.parent().data('semester-id');
+          // Use AJAX to update the course's semester
+          $.ajax({
+            url: "{% url 'update_schedule' academic_year semester %}",
+            type: "POST",
+            data: {
+              'course_id': course_id,
+              'new_semester_id': new_semester_id,
+              'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+              // Handle response
+            }
+          });
+        }
+      }).disableSelection();
+
+      $("#save-schedule").click(function() {
+        // AJAX call to save the entire schedule
+        $.ajax({
+          url: "{% url 'save_schedule' academic_year semester %}",
+          type: "POST",
+          data: {
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          success: function(response) {
+            // Handle response
+          }
+        });
+      });
+    });
+  </script>
+{% endblock %}

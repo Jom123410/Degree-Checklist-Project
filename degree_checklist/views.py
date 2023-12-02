@@ -1,12 +1,27 @@
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404, render, redirect
+from django.db.models import Q
+from datetime import datetime
+from django.contrib.auth.models import User
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required
 from .forms import (CourseForm, SemesterForm, DegreeProgramForm, StudentForm, 
-                   AdviserForm, DegreeRequirementForm, CourseEnrollmentForm, UploadFileForm)
-from .models import Course, Semester, DegreeProgram, Student, Adviser, DegreeRequirement, CourseEnrollment, UploadedDataFile
+                    AdviserForm, DegreeRequirementForm, CourseEnrollmentForm, UploadFileForm)
+from .models import (Course, Semester, DegreeProgram, Student, Adviser, 
+                     DegreeRequirement, CourseEnrollment, UploadedDataFile, Schedule)
+from .services import (add_courses_to_schedule, process_uploaded_file, generate_schedule, enroll_student_in_course,  
+                       get_current_academic_year, assign_adviser_to_student, get_current_semester, calculate_total_credits,
+                       update_student, delete_student, check_prerequisites, calculate_degree_progress)
 from django.views.generic import ListView, DetailView
-
+import json
 
 def home(request):
     return render(request, "home.html")
+
+def index(request):
+    return render(request, 'index.html')
 
 def upload_file(request):
     if request.method == 'POST':
@@ -49,6 +64,31 @@ def create_course(request):
         form = CourseForm()
     return render(request, 'create_course.html', {'form': form})
 
+
+def get_current_academic_year():
+    # Assuming the academic year starts in September
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+
+    # If the current month is January to August, the academic year began last year
+    if current_month < 9:
+        return current_year - 1
+    else:
+        return current_year
+        
+    
+def get_current_semester():
+    # Assuming two semesters: Spring (January to May) and Fall (September to December)
+    current_month = datetime.now().month
+
+    if 1 <= current_month <= 5:
+        return "Spring"
+    elif 9 <= current_month <= 12:
+        return "Fall"
+    else:
+        return "Summer"  # Assuming Summer for the remaining months; adjust as needed
+
+    
 def create_semester(request):
     if request.method == 'POST':
         form = SemesterForm(request.POST)
@@ -139,10 +179,107 @@ def add_semester(request):
             return redirect('semester_list')  # Redirect to the list of semesters after adding a semester
     else:
         form = Semester()
-
     return render(request, 'add_semester.html', {'form': form})
 
+def course_selection(request):
+    if request.method == 'GET':
+        courses = Course.objects.all()
+        return render(request, 'course_selection.html', {'courses': courses})
 
+    if request.method == 'POST':
+        # Get the list of selected course IDs from the form
+        selected_courses = request.POST.getlist('selected_courses')
+        schedule, created = Schedule.objects.get_or_create(
+            student=request.user.student,
+            academic_year=request.POST['academic_year'],
+            semester=request.POST['semester']
+        )
+
+        for course_id in selected_courses:
+            course = Course.objects.get(id=course_id)
+            # Here you would include logic to check prerequisites, scheduling conflicts, etc.
+            schedule.courses.add(course)
+        
+        messages.success(request, 'Courses have been added to your schedule.')
+        return redirect('schedule_view')  # Redirect to the view that displays the schedule
+
+    return render(request, 'course_selection.html')
+
+
+def get_current_academic_year():
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+    return current_year - 1 if current_month < 9 else current_year
+
+def get_current_semester():
+    current_month = datetime.now().month
+    if 1 <= current_month <= 5:
+        return "Spring"
+    elif 9 <= current_month <= 12:
+        return "Fall"
+    else:
+        return "Summer"
+
+def schedule_builder(request, academic_year=None, semester=None):
+    # Set default values if they are None
+    academic_year = academic_year or get_current_academic_year()
+    semester = semester or get_current_semester()
+
+    # Check if the user has an associated student
+    try:
+        student = request.user.student
+    except Student.DoesNotExist:
+        # Redirect to a different page or show an error message
+        return redirect('home')  # Replace 'error_page' with an appropriate error page URL name
+
+    # Fetch the Schedule object and render the page
+    schedule, created = Schedule.objects.get_or_create(
+        student=student,
+        academic_year=academic_year,
+        semester=semester
+    )
+
+    return render(request, 'schedule_builder.html', {
+        'schedule': schedule,
+        'academic_year': academic_year,
+        'semester': semester
+    })
+
+def update_schedule(request):
+    # Ensure that an 'application/json' content type is being sent with the request
+    if request.content_type != 'application/json':
+        return JsonResponse({'status': 'error', 'message': 'Invalid content type'}, status=400)
+    
+    # Parse the JSON data from the request
+    try:
+        data = json.loads(request.body)
+        course_id = data.get('course_id')
+        new_semester = data.get('new_semester')
+    except (KeyError, ValueError) as e:
+        return JsonResponse({'status': 'error', 'message': 'Invalid data provided'}, status=400)
+
+    # Get the course and schedule objects
+    course = get_object_or_404(Course, id=course_id)
+    student = get_object_or_404(Student, user=request.user)
+    schedule, created = Schedule.objects.get_or_create(student=student, semester=new_semester)
+
+    # Check if the course is already in the schedule for the semester
+    if course not in schedule.courses.all():
+        # Update the schedule to include the course
+        schedule.courses.add(course)
+        schedule.save()
+        return JsonResponse({'status': 'success', 'message': 'Schedule updated successfully'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Course is already in the schedule for this semester'}, status=400)
+    
+def save_schedule(request):
+    # Implement your logic here
+    # This might include saving a schedule to the database or performing other actions
+    return JsonResponse({'status': 'success', 'message': 'Schedule saved successfully'})
+
+def error_page(request, error_message):
+    return render(request, 'error_page.html', {'error_message': error_message})
+   
 # List and Detail views
 class StudentListView(ListView):
     model = Student

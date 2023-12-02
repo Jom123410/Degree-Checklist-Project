@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Advisers</h1>
+<ul>
+{% for adviser in object_list %}
+    <li><a href="{% url 'adviser-detail' adviser.pk %}">{{ adviser.first_name }} {{ adviser.last_name }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

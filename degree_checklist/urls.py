@@ -2,10 +2,28 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    # ... other url patterns from the first set if there are any
+
+
+    path('course-selection/', views.course_selection, name='course_selection'),
+    path('schedule_builder/', views.schedule_builder, name='schedule_builder'),
+    path('schedule_builder/<int:academic_year>/<str:semester>/', views.schedule_builder, name='schedule_builder_academic'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+
+
+
+     # Update schedule
+    path('update_schedule/', views.update_schedule, name='update_schedule'),
+    # Save schedule (assuming you have a view named save_schedule in views.py)
+    path('save_schedule/', views.save_schedule, name='save_schedule'),
+    path('error/', views.error_page, name='error_page'),
+
     # Home
-    path("", views.home, name="home"),
+    path("", views.index, name='index'),  # Root URL for index
+    path("home/", views.home, name="home"), 
 
     path('forms/', views.form_page, name='form_page'),
 
@@ -67,6 +85,8 @@ urlpatterns = [
     path('update-course-enrollment/<int:pk>/', views.update_course_enrollment, name='update_course_enrollment'),
     path('delete-course-enrollment/<int:pk>/', views.delete_course_enrollment, name='delete_course_enrollment'),
     path('list-course-enrollments/', views.list_course_enrollments, name='list_course_enrollments'),
+
+    
 ]
 
 if settings.DEBUG:

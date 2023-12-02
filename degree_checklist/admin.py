@@ -42,8 +42,8 @@ class AdviserAdmin(admin.ModelAdmin):
 
 @admin.register(DegreeRequirement)
 class DegreeRequirementAdmin(admin.ModelAdmin):
-    list_display = ['requirement_id', 'program', 'course', 'credits_required']
-    search_fields = ['program__program_name', 'course__course_name']  # adjusted search fields
+    list_display = ['requirement_id','program', 'course', 'credits_required']
+    search_fields = ['program_name', 'course__course_name']  # adjusted search fields
     list_filter = ['program']
     ordering = ['program']
 

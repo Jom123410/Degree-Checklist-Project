@@ -1,5 +1,52 @@
-{% extends "base.html" %} {% block title %} Home Page {% endblock %}
+{% extends "base.html" %}
+
+{% block title %}WTAMU Degree Checklist{% endblock %}
+
 {% block content %}
-    <h1>WTAMU Degree Checklist</h1>
-    <p>This is Your Degree Checklist Home Page</p>
+    <!-- Hero Section -->
+    <section class="hero-section py-5">
+        <h1 class="display-4 text-center">Welcome to WTAMU Degree Checklist</h1>
+        <p class="lead text-center">Your personal guide through your academic journey at West Texas A&M University.</p>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <i class="icon-style fas fa-book-reader fa-3x"></i>
+                    <h3>Explore Courses</h3>
+                    <p>Discover and plan your courses for each semester to ensure a smooth academic experience.</p>
+                    <a href="{% url 'course-list' %}" class="btn btn-primary">View Courses</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="icon-style fas fa-chart-line fa-3x"></i>
+                    <h3>Track Your Progress</h3>
+                    <p>Monitor your academic progress and stay on track to achieve your degree requirements.</p>
+                    <a href="{% url 'form_page' %}" class="btn btn-primary">View Forms</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="icon-style fas fa-user-graduate fa-3x"></i>
+                    <h3>Academic Advising</h3>
+                    <p>Get expert advice and guidance from our dedicated academic advisors at every step.</p>
+                    <a href="{% url 'adviser-list' %}" class="btn btn-primary">Meet Advisers</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="call-to-action py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <h2>Start Planning Your Academic Journey Today!</h2>
+                    <p>Join the WTAMU community and take the first step towards your future.</p>
+                </div>
+                <div class="col-md-3 text-md-right">
+                   
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

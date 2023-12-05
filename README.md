@@ -1,3 +1,29 @@
+# Degree Checklist Project
+
+## Introduction
+The Degree Checklist project is a web-based application designed to assist students in tracking their academic progress throughout their university education. This system allows students to plan their courses, monitor their progress towards graduation, and interact with academic advisors.
+
+## Features
+- **Course Planning**: Customize and plan academic courses for each semester.
+- **Progress Tracking**: Monitor academic progress towards graduation.
+- **Schedule Builder**: Organize and build academic schedules.
+- **Academic Advising**: Access guidance and support from academic advisors.
+
+## Installation
+
+### Prerequisites
+- Python 3.x
+- Django 4.2.5
+- MySQL
+
+### Setting up the Project
+1. Clone the repository
+2. Install the required dependencies:
+3. Create a MySQL database named `degreechecklistdb`.
+4. Configure your database settings in `settings.py`.
+5. Run migrations:
+6. Start the Django development server:
+
 Screenshot
 ![Screenshot (136)](https://github.com/Jom123410/280222/assets/57498419/060928b6-3304-4499-a584-8c2ec05da4c0)
 ![Screenshot (137)](https://github.com/Jom123410/280222/assets/57498419/ad79ecbc-3100-4f63-b0ac-4ab84af00d19)
